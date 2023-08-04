@@ -1,5 +1,5 @@
 
-let tasks = [];
+let tasks = code;
 function addTask() {
   const taskInput = document.getElementById('taskInput');
   const task = taskInput.value.trim();
