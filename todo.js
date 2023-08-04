@@ -1,55 +1,75 @@
-
 let tasks = [];
-function addTask() {
-  const taskInput = document.getElementById('taskInput');
-  const task = taskInput.value.trim();
 
-  if (task !== '') {
-    tasks.push(task);
-    renderTasks();
-    taskInput.value = '';
-  }
-}
+    
+    function loadTasksFromLocalStorage() {
+      const storedTasks = localStorage.getItem('tasks');
+      if (storedTasks) {
+        tasks = JSON.parse(storedTasks);
+        renderTasks();
+      }
+    }
 
-function removeTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
-}
+    
+    function saveTasksLocally() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
 
-function editTask(index) {
-  const newTask = prompt('Enter the new task:');
-  if (newTask !== null && newTask.trim() !== '') {
-    tasks[index] = newTask.trim();
-    renderTasks();
-  }
-}
+    loadTasksFromLocalStorage();
 
-function resetTasks() {
-  tasks = [];
-  renderTasks();
-}
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const task = taskInput.value.trim();
 
-function renderTasks() {
-  const taskList = document.getElementById('taskList');
-  taskList.innerHTML = '';
+      if (task !== '') {
+        tasks.push(task);
+        saveTasksLocally(); 
+        renderTasks();
+        taskInput.value = '';
+      }
+    }
 
-  for (let i = 0; i < tasks.length; i++) {
-    const task = tasks[i];
+    function removeTask(index) {
+      tasks.splice(index, 1);
+      saveTasksLocally(); 
+      renderTasks();
+    }
 
-    const listItem = document.createElement('li');
-    listItem.textContent = task;
+    function editTask(index) {
+      const newTask = prompt('Enter the new task:');
+      if (newTask !== null && newTask.trim() !== '') {
+        tasks[index] = newTask.trim();
+        saveTasksLocally(); 
+        renderTasks();
+      }
+    }
 
-    const removeButton = document.createElement('button');
-    removeButton.textContent = 'Remove';
-    removeButton.onclick = () => removeTask(i);
+    function resetTasks() {
+      tasks = [];
+      localStorage.removeItem('tasks'); 
+      renderTasks();
+    }
 
-    const editButton = document.createElement('button');
-    editButton.textContent = 'Edit';
-    editButton.onclick = () => editTask(i);
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
 
-    listItem.appendChild(removeButton);
-    listItem.appendChild(editButton);
+      for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
 
-    taskList.appendChild(listItem);
-  }
-}
+        const listItem = document.createElement('li');
+        listItem.textContent = task;
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = () => removeTask(i);
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.onclick = () => editTask(i);
+
+        listItem.appendChild(removeButton);
+        listItem.appendChild(editButton);
+
+        taskList.appendChild(listItem);
+      }
+    }
