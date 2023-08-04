@@ -1,7 +1,5 @@
-// Store tasks in an array
-let tasks = [];
 
-// Function to add a task
+let tasks = [];
 function addTask() {
   const taskInput = document.getElementById('taskInput');
   const task = taskInput.value.trim();
@@ -13,13 +11,11 @@ function addTask() {
   }
 }
 
-// Function to remove a task
 function removeTask(index) {
   tasks.splice(index, 1);
   renderTasks();
 }
 
-// Function to edit a task
 function editTask(index) {
   const newTask = prompt('Enter the new task:');
   if (newTask !== null && newTask.trim() !== '') {
@@ -28,13 +24,11 @@ function editTask(index) {
   }
 }
 
-// Function to reset tasks
 function resetTasks() {
   tasks = [];
   renderTasks();
 }
 
-// Function to render tasks in the UI
 function renderTasks() {
   const taskList = document.getElementById('taskList');
   taskList.innerHTML = '';
